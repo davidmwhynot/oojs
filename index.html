@@ -3,7 +3,7 @@
    <head>
       <meta charset="utf-8">
       <title>Object Oriented Javascript</title>
-      <link rel="stylesheet" href="https://bootswatch.com/cyborg/bootstrap.min.css">
+      <link rel="stylesheet" href="https://bootswatch.com/slate/bootstrap.min.css">
    </head>
    <body style="margin-top: 50px;">
       <div class="container">
@@ -11,82 +11,168 @@
             <h1>Object Oriented Javascript</h1>
             <p class="lead">David Whynot</p>
          </div>
+         <div class="well">
+            <script type="text/javascript">
+               var customer = {
+                  name: "Tom Smith",
+                  speak: function() {
+                     return "My name is " + this.name;
+                  },
+                  address: {
+                     street: '123 Main St',
+                     city: 'Pittsburgh',
+                     state: 'PA'
+                  }
+               };
+               document.write(customer.speak() + "<br />");
+
+               document.write(customer.name + " lives at " + customer.address.street + "<br />");
+
+               customer.address.country = "US";
+
+               document.write(customer.address.country + "<br />");
+
+               function Person(name, street) {
+                  this.name = name;
+                  this.street = street;
+
+                  this.info = function() {
+                     return "My name is " + this.name + " an I live on " + this.street;
+                  }
+               }
+
+               var bobSmith = new Person("Bob Smith", "234 main st");
+
+               document.write(bobSmith.info() + "<br />");
+               document.write("Bob is a person " + (bobSmith instanceof Person) + "<br />");
+
+               function changeName(person) {
+                  person.name = "Sue Smith";
+               }
+
+               changeName(bobSmith);
+
+               document.write("Bob became " + bobSmith.name + "<br />");
+
+               var person1 = new Person("Paul", "123 main");
+               var person2 = new Person("Paul", "123 main");
+
+               document.write("Are they equal " + (person1 == person2) + "<br />");
+            </script>
+         </div>
+         <div class="well">
+            <script type="text/javascript">
+               function getSum(num1, num2) {
+                  return num1 + num2;
+               }
+               document.write("Num of arguments " + getSum.length + "<br />");
+               function Mammal(name) {
+                  this.name = name;
+                  this.getInfo = function() {
+                     return "The mammals name is " + this.name;
+                  }
+               }
+
+               Mammal.prototype.sound = "Grrr";
+               Mammal.prototype.makeSound = function() {
+                  return this.name + " says " + this.sound;
+               }
+
+               var grover = new Mammal("Grover");
+               document.write(grover.makeSound() + "<br />");
+               for(var prop in grover) {
+                  document.write(prop + " : " + grover[prop] + "<br />");
+               }
+               document.write("name property of grover : " + grover.hasOwnProperty("name") + "<br />");
+               document.write("sound Property of grover : " + grover.hasOwnProperty("sound") + "<br />");
+
+               Array.prototype.inArray = function inArray(value) {
+                  for(i=0; i<this.length; ++i) {
+                     if(this[i] === value) {
+                        return true;
+                     }
+                  }
+                  return false;
+               }
+
+               var sampArray = [1,2,3,4,5];
+               document.write('3 in array ' + sampArray.inArray(3) + '<br />');
+
+               function SecretCode() {
+                  var secretNum = 78;
+
+                  this.guessNum = function(num) {
+                     if(num > 78) {
+                        return "lower";
+                     } else if (num < 78) {
+                        return "higher";
+                     } else {
+                        return "you guessed it";
+                     }
+                  }
+               }
+
+               var secret = new SecretCode();
+
+               SecretCode.prototype.getSecret = function() {
+                  return this.secretNum;
+               }
+
+               document.write("Value of secretNum : " + secret.secretNum + '<br />');
+               document.write('Is 70 the number : ' + secret.guessNum(78) + '<br />');
+               document.write('The secret number is ' + secret.getSecret() + '<br />');
+            </script>
+         </div>
+         <div class="well">
+            <script type="text/javascript">
+               /* GETTERS AND SETTERS */
+
+               var address = {
+                  street: 'No Street',
+                  city: 'No City',
+                  state: 'No State',
+
+                  get getAddress() {
+                     return this.street + ', ' + this.city + ', ' + this.state;
+                  },
+
+                  set setAddress(theAddress) {
+                     var parts = theAddress.toString().split(',');
+                     this.street = parts[0] || '';
+                     this.city = parts[1] || '';
+                     this.state = parts[2] || '';
+                  }
+               }
+
+               address.setAddress = '123 main st, Pittsburgh, pa';
+               document.write('Address :' + address.getAddress + '<br />');
+               document.write('City : ' + address.city + '<br />');
+
+            </script>
+         </div>
+         <div class="well">
+            <script type="text/javascript">
+               function Coordinates() {
+                  this.latitude = 0;
+                  this.longitude = 0;
+               }
+
+               Object.__defineGetter__.call(Coordinates.prototype, 'getCoords', function(){
+                  return 'Lat : ' + this.latitude + ' Long : ' + this.longitude;
+               });
+
+               Object.__defineSetter__.call(Coordinates.prototype, 'setCoords', function(coords){
+                  var parts = coords.toString().split(', ');
+                  this.latitude = parts[0] || '';
+                  this.longitude = parts[1] || '';
+               });
+
+               var testCoords = new Coordinates();
+               testCoords.setCoords = '40.71, 74.00';
+
+               document.write('Coordinates : ' + testCoords.getCoords + '<br />');
+            </script>
+         </div>
       </div>
-      <script type="text/javascript">
-         var customer = {
-            name: "Tom Smith",
-            speak: function() {
-               return "My name is " + this.name;
-            },
-            address: {
-               street: '123 Main St',
-               city: 'Pittsburgh',
-               state: 'PA'
-            }
-         };
-         document.write(customer.speak() + "<br />");
-
-         document.write(customer.name + " lives at " + customer.address.street + "<br />");
-
-         customer.address.country = "US";
-
-         document.write(customer.address.country + "<br />");
-
-         function Person(name, street) {
-            this.name = name;
-            this.street = street;
-
-            this.info = function() {
-               return "My name is " + this.name + " an I live on " + this.street;
-            }
-         }
-
-         var bobSmith = new Person("Bob Smith", "234 main st");
-
-         document.write(bobSmith.info() + "<br />");
-         document.write("Bob is a person " + (bobSmith instanceof Person) + "<br />");
-
-         function changeName(person) {
-            person.name = "Sue Smith";
-         }
-
-         changeName(bobSmith);
-
-         document.write("Bob became " + bobSmith.name + "<br />");
-
-         var person1 = new Person("Paul", "123 main");
-         var person2 = new Person("Paul", "123 main");
-
-         document.write("Are they equal " + (person1 == person2) + "<br />");
-      </script>
-      <script type="text/javascript">
-         function getSum(num1, num2) {
-            return num1 + num2;
-         }
-         document.write("Num of arguments " + getSum.length + "<br />");
-         function Mammal(name) {
-            this.name = name;
-            this.getInfo = function() {
-               return "The mammals name is " + this.name;
-            }
-         }
-
-         Mammal.prototype.sound = "Grrr";
-         Mammal.prototype.makeSound = function() {
-            return this.name + " says " + this.sound;
-         }
-
-         var grover = new Mammal("Grover");
-
-         document.write(grover.makeSound() + "<br />");
-
-         for(var prop in grover) {
-            document.write(prop + " : " + grover[prop] + "<br />");
-         }
-
-         document.write("name property of grover : " + grover.hasOwnProperty("name") + "<br />");
-
-         document.write("sound Property of grover : " + grover.hasOwnProperty("sound") + "<br />");
-      </script>
    </body>
 </html>
