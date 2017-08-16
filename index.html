@@ -173,6 +173,406 @@
                document.write('Coordinates : ' + testCoords.getCoords + '<br />');
             </script>
          </div>
+         <div class="well">
+           <script type="text/javascript">
+            function Point() {
+                this.xPos = 0;
+                this.yPos = 0;
+            }
+
+            Object.defineProperty(Point.prototype, 'pointPos', {
+                get: function() {
+                    return 'x: ' + this.xPos + ' y : ' + this.yPos;
+                },
+                set: function(thePoint) {
+                    var parts = thePoint.toString().split(', ');
+                    this.xPos = parts[0] || '';
+                    this.yPos = parts[1] || '';
+                }
+            });
+
+            var aPoint = new Point();
+
+            aPoint.pointPos = '100, 200';
+
+            document.write('Point Position ' + aPoint.pointPos + '<br />');
+           </script>
+         </div>
+         <div class="well">
+           <script type="text/javascript">
+                var Circle = function(radius) {
+                    this._radius = radius;
+                }
+
+                Circle.prototype = {
+                    set radius(radius) {
+                        this._radius = radius;
+                    },
+                    get radius() {
+                        return this._radius;
+                    },
+                    get area() {
+                        return Math.PI * (this._radius * this._radius);
+                    }
+                };
+
+                var circ = new Circle(10);
+
+                circ.radius = 15;
+
+                document.write('A circle with radius ' + circ.radius + ' has an area of ' + circ.area.toFixed(2) + '<br />');
+           </script>
+         </div>
+         <div class="well">
+           <script type="text/javascript">
+                function Animal() {
+                    this.name = 'Animal';
+
+                    this.toString = function() {
+                        return 'my name is ' + this.name;
+                    };
+                }
+
+                function Canine() {
+                    this.name = 'canine';
+                }
+
+                function Wolf() {
+                    this.name = 'wolf';
+                }
+
+                Canine.prototype = new Animal();
+                Wolf.prototype = new Canine();
+
+                Canine.prototype.constructor = Canine;
+                Wolf.prototype.constructor = Wolf;
+
+                var arcticWolf = new Wolf();
+
+                document.write(arcticWolf.toString() + '<br />');
+
+                document.write('Wolf instance of animal : ' + (arcticWolf instanceof Animal) + '<br />');
+
+                Animal.prototype.sound = 'Grrrrr';
+
+                Animal.prototype.getSound = function() {
+                    return this.name + ' says ' + this.sound;
+                }
+
+                Canine.prototype.sound = 'Woof';
+                Wolf.prototype.sound = 'Grrr Woof';
+
+                document.write(arcticWolf.getSound() + '<br />');
+
+                function Rodent() {
+                    this.name = 'Rodent';
+                }
+
+                function Rat() {
+                    this.name = 'rat';
+                }
+
+                Rodent.prototype = new Animal();
+
+                Rat.prototype = Rodent.prototype;
+                Rodent.prototype.constructor = Rodent;
+
+                Rat.prototype.constructor = Rat;
+
+                var caneRat = new Rat();
+
+                document.write(caneRat.toString() + '<br />');
+
+                function extend(Child, Parent) {
+                    var Temp = function() {
+
+                    };
+
+                    Temp.prototype = Parent.prototype;
+
+                    Child.prototype = new Temp();
+
+                    Child.prototype.constructor = Child;
+                }
+
+                function Deer() {
+                    this.name = 'Deer';
+                    this.sound = 'Snort';
+                }
+
+                extend(Deer,Animal);
+
+                var elk = new Deer();
+
+                // elk.name = 'elk';
+
+                document.write(elk.getSound() + '<br />');
+           </script>
+         </div>
+         <div class="well">
+           <script type="text/javascript">
+                function Vehicle() {
+                    this.name = 'Vehicle';
+                }
+
+                Vehicle.prototype = {
+                    drive: function() {
+                        return this.name + ' drives forward';
+                    },
+                    stop: function() {
+                        return this.name + ' stops';
+                    }
+                }
+
+                function Truck(name) {
+                    this.name = name;
+                }
+
+                Truck.prototype = new Vehicle();
+                Truck.prototype.constructor = Truck;
+
+                Truck.prototype.drive = function() {
+                    var driveMsg = Vehicle.prototype.drive.apply(this);
+
+                    return driveMsg += ' through a field';
+                }
+
+                var jeep = new Truck('Jeep');
+
+                document.write(jeep.drive() + '<br />');
+                document.write(jeep.stop() + '<br />');
+
+           </script>
+         </div>
+         <div class="well">
+           <script type="text/javascript">
+
+                // old way
+
+                var addStuff = {
+                    sum: function(num1, num2) {
+                        return num1 + num2;
+                    }
+                };
+                document.write('1 + 2 = ' + addStuff.sum(1,2) + '<br />');
+
+                // es6 (new) way
+
+                var addStuff = {
+                    sum(num1, num2) {
+                        return num1 + num2;
+                    }
+                }
+
+                document.write('1 + 2 = ' + addStuff.sum(1,2) + '<br />');
+
+           </script>
+         </div>
+         <div class="well">
+           <script type="text/javascript">
+                class Pointt {
+                    constructor(xPos, yPos) {
+                        this.xPos = xPos;
+                        this.yPos = yPos;
+                    }
+
+                    getPos() {
+                        return 'X: ' + this.xPos +  ' Y: ' + this.yPos;
+                    }
+                }
+
+                var point = new Pointt(100,200);
+
+                document.write('Point Pos: ' + point.getPos() + '<br />');
+           </script>
+         </div>
+         <div class="well">
+           <script type="text/javascript">
+                class Animall {
+                    constructor(name) {
+                        this.name = name;
+                    }
+
+                    toString() {
+                        return 'Animal is named ' + this.name;
+                    }
+
+                    static getAnimal() {
+                        return new Animall('No name');
+                    }
+                }
+
+                class Dog extends Animall {
+                    constructor(name,owner) {
+                        super(name);
+                        this.owner = owner;
+                    }
+
+                    toString() {
+                        return super.toString() + '<br /> dog is named ' + this.name;
+                    }
+                }
+
+                var rover = new Dog('Rover','Paul');
+                document.write(rover.name + ' is owned by ' + rover.owner + '<br />');
+
+                document.write(rover.toString() + '<br />');
+
+                var bowser = Animall.getAnimal();
+
+                document.write('Bowser info: ' + bowser.toString() + '<br />');
+           </script>
+         </div>
+         <div class="jumbotron">
+            <h1>Design Patterns</h1>
+         </div>
+         <div class="well">
+            <h2 class="text-warning">Singleton Pattern</h2>
+            <p class="text-info">Used when you know that you will only ever want ONE object to be created of a specific type. Our example will first be a game character with fixed statistics</p>
+           <script type="text/javascript">
+                function Hero(name) {
+                    if(typeof Hero.instance === 'object') {
+                        return Hero.instance;
+                    }
+
+                    this.name = name;
+                    Hero.instance = this;
+                    return this;
+                }
+
+                var derekHero = Hero('Derek');
+                document.write('Our hero is ' + derekHero.name + '<br />');
+
+                var paulHero = Hero('Paul');
+                document.write('Our hero is ' + paulHero.name + '<br />');
+           </script>
+         </div>
+         <div class="well">
+            <h2 class="text-warning">Factory Pattern</h2>
+            <p class="text-info">Used to generate different objects upon request.</p>
+           <script type="text/javascript">
+                function Sword(desc) {
+                    this.weaponType = 'Sword';
+                    this.metal = desc.metal || 'Steel';
+                    this.style = desc.style || 'Longsword';
+                    this.hasMagic = desc.hasMagic || false;
+                }
+
+                function Bow(desc) {
+                    this.weaponType = 'Bow';
+                    this.material = desc.material || 'Wood';
+                    this.style = desc.style || 'Longbow';
+                    this.hasMagic = desc.hasMagic || false;
+                }
+
+                function WeaponFactory() {
+
+                }
+
+                WeaponFactory.prototype.makeWeapon = function(desc) {
+                    var weaponClass= null;
+
+                    if(desc.weaponType === 'Sword') {
+                        weaponClass = Sword;
+                    } else if(desc.weaponType === 'Bow') {
+                        weaponClass = Bow;
+                    } else {
+                        return false;
+                    }
+
+                    return new weaponClass(desc);
+                }
+
+                var myWeaponFact = new WeaponFactory();
+
+                var bladeFist = myWeaponFact.makeWeapon({
+                    weaponType: 'Sword',
+                    metal: 'Dark Iron',
+                    style: 'Scythe',
+                    hasMagic: true
+                });
+
+                document.write(bladeFist.weaponType + ' of type ' + bladeFist.style + ' crafted from ' + bladeFist.metal + '<br />');
+           </script>
+         </div>
+         <div class="well">
+             <h2 class="text-warning">Decorator Pattern</h2>
+             <p class="text-info">Used to alter an object at runtime...?</p>
+           <script type="text/javascript">
+                function Pizza(price) {
+                    this.price = price || 10;
+                }
+
+                Pizza.prototype.getPrice =  function() {
+                    return this.price;
+                }
+
+                function ExtraCheese(pizza) {
+                    var prevPrice = pizza.price;
+
+                    pizza.price = prevPrice + 1;
+                }
+
+                var myPizza = new Pizza(10);
+
+                ExtraCheese(myPizza);
+
+                document.write('Cost of Pizza : $ ' + myPizza.price +  '<br />');
+           </script>
+         </div>
+         <div class="well">
+             <h2 class="text-warning">Observer Pattern</h2>
+             <p class="text-info">Uses a single object to notify many other objects or observers whenever a state change occurs.</p>
+           <script type="text/javascript">
+                var Observable = function() {
+                    this.subscribers = [];
+                }
+
+                Observable.prototype = {
+                    subscribe: function(subscriber) {
+                        this.subscribers.push(subscriber);
+                    },
+                    unsubscribe: function(unsubscriber){
+                        for(i = 0; i< this.subscribers.length; ++i) {
+                            if(this.subscribers[i] === unsubscriber) {
+                                this.subscribers.splice(i,1);
+                                return unsubscriber.name;
+                            }
+                        }
+                    },
+                    publish: function(data) {
+                        for(i = 0; i < this.subscribers.length; ++i) {
+                            this.subscribers[i].recieveData(data);
+                        }
+                    }
+                };
+
+                var OrganFanny = {
+                    name: 'Organ Fanny',
+                    recieveData: function(data) {
+                        document.write(this.name + ' received your info ' + data + '<br />');
+                    }
+                }
+
+                var BoldmanYaks = {
+                    name: 'BoldmanYaks',
+                    recieveData: function(data) {
+                        document.write(this.name + ' received your info ' + data + '<br />');
+                    }
+                }
+
+                observable = new Observable();
+
+                observable.subscribe(OrganFanny);
+                observable.subscribe(BoldmanYaks);
+
+                observable.publish('IBM at $145.30');
+
+                document.write(observable.unsubscribe(OrganFanny) + ' unsubscribed<br />');
+
+                observable.publish('IBM at $144.30');
+           </script>
+         </div>
       </div>
    </body>
 </html>
